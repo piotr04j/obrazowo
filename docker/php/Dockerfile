@@ -9,3 +9,5 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 RUN rm /etc/localtime \
  && ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
  && "date"
+
+WORKDIR /var/www/html
