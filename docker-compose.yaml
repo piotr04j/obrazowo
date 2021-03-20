@@ -9,9 +9,7 @@ services:
     networks:
       - symfony_web
   server:
-    build:
-      context: './docker/server/'
-      dockerfile: Dockerfile
+    image: httpd:2.4.46
     depends_on:
       - app
     ports:
