@@ -10,6 +10,16 @@ RUN rm /etc/localtime \
  && ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
  && "date"
 
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+
+RUN apt-get update && apt-get install -y \
+    zlib1g-dev \
+    libzip-dev \
+    unzip
+RUN docker-php-ext-install zip
+
 WORKDIR /var/www/html
 
 EXPOSE 9000
