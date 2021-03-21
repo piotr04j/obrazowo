@@ -4,22 +4,48 @@ services:
     build:
       context: './docker/php/'
       dockerfile: Dockerfile
+    restart: always
     volumes:
       - ./app/:/var/www/html/
     networks:
       - symfony_web
+    depends_on:
+      - db
   server:
     image: httpd:2.4.46
+    restart: always
     depends_on:
       - app
+      - db
     ports:
-      - "80:80"
+      - 80:80
     volumes:
       - ./app/:/var/www/html/
       - ./docker/server/config/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ./docker/server/config/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
     networks:
       - symfony_web
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - symfony_web
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8000:8080
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - symfony_web
 networks:
   symfony_web:
-
