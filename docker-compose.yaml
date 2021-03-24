@@ -36,11 +36,14 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - 8000:8080
+      - 8000:8000
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
       - PMA_PORT=3306
+    volumes:
+      - ./docker/phpmyadmin/config/apache2.conf:/etc/apache2/apache2.conf
+      - ./docker/phpmyadmin/config/ports.conf:/etc/apache2/ports.conf
     depends_on:
       - db
     links:
@@ -49,3 +52,4 @@ services:
       - symfony_web
 networks:
   symfony_web:
+
