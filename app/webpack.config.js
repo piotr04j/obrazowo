@@ -7,18 +7,18 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production'
   return  {
-    entry: { main: './frontend/app.js'},
+    entry: { app: './frontend/app.js'},
     output: {
       path: path.resolve(__dirname, 'public/dist'),
-      filename: '[name].[chunkhash].js',
-      chunkFilename: '[name].[chunkhash].js'
+      filename: '[name]-[hash].js',
+      chunkFilename: '[id]-[chunkhash].js'
     },
-    devtool: devMode && "inline-source-map",
+    devtool: devMode && 'inline-source-map',
     plugins: [
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
-        filename: devMode ? '[name].css' : '[name].[chunkhash].css',
-        chunkFilename: devMode ? '[name].css' : '[name].[chunkhash].css'
+        filename: '[name]-[hash].css',
+        chunkFilename: '[id]-[chunkhash].css'
       }),
       new WebpackAssetsManifest({
         writeToDisk: true,
@@ -28,14 +28,15 @@ module.exports = (env, argv) => {
       })
     ],
     resolve: {
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: ['.ts', '.tsx', '.js']
     },
     module: {
       rules: [
-        { test: /\.(js|tsx?)$/, loader: "ts-loader" },
+        { test: /\.(js|tsx?)$/, loader: 'ts-loader' },
         {
           test: /\.s?css$/i,
           use: [
+            MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { sourceMap: true } },
             { loader: 'sass-loader', options: { sourceMap: true } }
           ],
@@ -57,3 +58,4 @@ module.exports = (env, argv) => {
     }
   }
 }
+
