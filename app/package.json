@@ -23,7 +23,8 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "start:dev": "webpack --mode development --watch",
+        "build:dev": "webpack --mode development --watch",
+        "server:dev": "webpack serve",
         "build": "webpack --mode=production"
     },
     "dependencies": {
