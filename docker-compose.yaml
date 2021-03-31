@@ -5,6 +5,8 @@ services:
       context: './docker/php/'
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - 8003:8003
     volumes:
       - ./app/:/var/www/html/
       - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
