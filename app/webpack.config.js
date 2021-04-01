@@ -18,6 +18,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, assetChunkPath),
       filename: '[name].[contenthash].js'
     },
+    devtool: devMode ? 'cheap-source-map' : false,
     plugins: [
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
@@ -27,7 +28,7 @@ module.exports = (env, argv) => {
         writeToDisk: true,
         entrypoints: true,
         output: 'entrypoints.json',
-        publicPath :  isDevServer ? 'http://localhost:' + devServerPort + '/' + assetChunkPath + '/' : 'public/dist/'
+        publicPath :  isDevServer ? 'http://localhost:' + devServerPort + '/' + assetChunkPath + '/' : 'dist/'
       })
     ],
     resolve: {
@@ -37,12 +38,18 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.(js|tsx?)$/,
+          include: [
+            path.resolve(__dirname, 'frontend'),
+          ],
           exclude: /node_modules/,
           loader: 'ts-loader'
         },
         {
           test: /\.s?css$/i,
           exclude: /node_modules/,
+          include: [
+            path.resolve(__dirname, 'frontend'),
+          ],
           use: [
             MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { sourceMap: true } },
@@ -68,4 +75,5 @@ module.exports = (env, argv) => {
     }
   }
 }
+
 
