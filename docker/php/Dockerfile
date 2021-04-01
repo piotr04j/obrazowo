@@ -30,6 +30,7 @@ SHELL ["/bin/bash", "--login", "-c"]
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN nvm install 14.16.0
+ENV NODE_OPTIONS=--max-old-space-size=6144
 
 WORKDIR /var/www/html
 
