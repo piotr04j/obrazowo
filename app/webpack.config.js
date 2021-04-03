@@ -10,26 +10,35 @@ module.exports = (env, argv) => {
   const assetBasePath = 'public/'
   const assetChunkPath = 'public/dist'
   const isDevServer = env.WEBPACK_SERVE
+  const webpackAssetsManifest = new WebpackAssetsManifest({
+    writeToDisk: true,
+    entrypoints: true,
+    output: 'entrypoints.json',
+    publicPath :  isDevServer ? 'http://localhost:' + devServerPort + '/' + assetChunkPath + '/' : 'dist/'
+  })
+  webpackAssetsManifest.hooks.transform.tap('Adjusted nesting for webpack encore', function(assets, manifest) {
+    const adjustedAssets = { entrypoints: { app: null }}
+    adjustedAssets.entrypoints.app = assets.entrypoints.app.assets
+
+    return adjustedAssets
+  })
 
   return  {
     mode: devMode ? 'development' : 'production',
     entry: { app: './frontend/app.js'},
     output: {
       path: path.resolve(__dirname, assetChunkPath),
-      filename: '[name].[contenthash].js'
+      filename: '[name].[contenthash].js',
+      chunkFilename: '[id].[contenthash].js'
     },
     devtool: devMode ? 'cheap-source-map' : false,
     plugins: [
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css'
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css'
       }),
-      new WebpackAssetsManifest({
-        writeToDisk: true,
-        entrypoints: true,
-        output: 'entrypoints.json',
-        publicPath :  isDevServer ? 'http://localhost:' + devServerPort + '/' + assetChunkPath + '/' : 'dist/'
-      })
+      webpackAssetsManifest
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js']
@@ -75,5 +84,3 @@ module.exports = (env, argv) => {
     }
   }
 }
-
-
