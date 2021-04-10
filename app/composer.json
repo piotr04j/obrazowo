@@ -2,6 +2,8 @@
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "dev",
+    "name": "obrazowo/obrazowo",
+    "description": "",
     "prefer-stable": true,
     "require": {
         "php": ">=7.2.5",
