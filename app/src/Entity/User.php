@@ -46,9 +46,11 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function setEmail(): string
+    public function setEmail(string $email): self
     {
-        return (string) $this->email;
+        $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -93,6 +95,14 @@ class User implements UserInterface
     public function getPassword(): string
     {
         return (string) $this->password;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getEmail(): string
+    {
+        return (string) $this->email;
     }
 
     public function setPassword(string $password): self
