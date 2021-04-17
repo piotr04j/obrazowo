@@ -18,3 +18,6 @@ Tests use remote interpreter with options configured as:
  - PHPUnit library path to phpunit.phar `bin/phpunit`
  - Test runner path `phpunit.xml.dist`
  - CLI interpreter service with php from docker-compose `app + php version` and choose there `connect to existing container`
+
+### Commands:
+ - command to manually encode password: `bin/console security:encode-password 'your_plain_password' 'App\Entity\User'`
